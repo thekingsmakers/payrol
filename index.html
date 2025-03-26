@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Automation System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/daily-work.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>AlREYADA PAYROL SYSTEM</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="month-selector">
+                    <h3>Monthly Records</h3>
+                    <ul id="monthList"></ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <h1 id="currentMonth"></h1>
+                <div class="actions">
+                    <button id="viewDailyWork">Daily Work</button>
+                    <button id="exportExcel">Export to Excel</button>
+                    <button id="exportPDF">Export to PDF</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Summary Cards -->
+                <section class="summary-cards">
+                    <div class="card total-payroll">
+                        <h3>Total Payroll</h3>
+                        <p id="totalPayroll">$0</p>
+                    </div>
+                    <div class="card total-employees">
+                        <h3>Total Employees</h3>
+                        <p id="totalEmployees">0</p>
+                    </div>
+                    <div class="card total-expenses">
+                        <h3>Total Expenses</h3>
+                        <p id="totalExpenses">$0</p>
+                    </div>
+                    <div class="card working-days">
+                        <h3>Working Days</h3>
+                        <div class="working-days-input">
+                            <input type="number" id="workingDaysInput" min="1" max="31">
+                            <button id="updateWorkingDays">Update</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Access Tabs -->
+                <section class="quick-access-tabs">
+                    <button class="tab-btn active" data-tab="employees">Employees</button>
+                    <button class="tab-btn" data-tab="expenses">Expenses</button>
+                    <button class="tab-btn" data-tab="fixed-expenses">Fixed Expenses</button>
+                    <button class="tab-btn" data-tab="purchases">Purchases</button>
+                </section>
+
+                <!-- Data Tables -->
+                <section class="data-tables">
+                    <!-- Employee Table -->
+                    <div class="tab-content active" id="employeesTab">
+                        <div class="table-header">
+                            <h3>Employee Management</h3>
+                            <button id="addEmployee" class="add-btn">Add Employee</button>
+                        </div>
+                        <div class="salary-table">
+                            <table id="employeeTable">
+                                <thead>
+                                    <tr>
+                                        <th>Employee Name</th>
+                                        <th>Basic Salary</th>
+                                        <th>Allowances</th>
+                                        <th>Deductions</th>
+                                        <th>Days Worked</th>
+                                        <th>Net Salary</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employeeTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Expenses Table -->
+                    <div class="tab-content" id="expensesTab">
+                        <div class="table-header">
+                            <h3>Expense Management</h3>
+                            <button id="addExpense" class="add-btn">Add Expense</button>
+                        </div>
+                        <div class="expense-table">
+                            <table id="expenseTable">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expenseTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Fixed Expenses Table -->
+                    <div class="tab-content" id="fixedExpensesTab">
+                        <div class="table-header">
+                            <h3>Fixed Expense Management</h3>
+                            <button id="addFixedExpense" class="add-btn">Add Fixed Expense</button>
+                        </div>
+                        <div class="fixed-expense-table">
+                            <table id="fixedExpenseTable">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th>Recurring</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fixedExpenseTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Purchases Table -->
+                    <div class="tab-content" id="purchasesTab">
+                        <div class="table-header">
+                            <h3>Purchase Management</h3>
+                            <button id="addPurchase" class="add-btn">Add Purchase</button>
+                        </div>
+                        <div class="purchase-table">
+                            <table id="purchaseTable">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Amount</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchaseTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts Section -->
+                <section class="charts-section">
+                    <div class="chart-container">
+                        <canvas id="salaryTrendsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts (in correct dependency order) -->
+    <script src="js/utils.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/daily-work.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

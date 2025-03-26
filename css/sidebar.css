@@ -1,0 +1,149 @@
+/* Sidebar Styles */
+.sidebar {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 1rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.month-selector h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#monthList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#monthList li {
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    background-color: transparent;
+}
+
+#monthList li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#monthList li.active {
+    background-color: var(--secondary-color);
+    font-weight: 500;
+}
+
+/* Mobile Navigation Toggle */
+.nav-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1001;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Support */
+.dark-mode .sidebar {
+    background-color: var(--primary-color);
+}
+
+.dark-mode #monthList li {
+    color: white;
+}
+
+.dark-mode #monthList li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode #monthList li.active {
+    background-color: var(--secondary-color);
+}
+
+.dark-mode .month-selector h3 {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sidebar-header h2 {
+        font-size: 1.25rem;
+    }
+
+    #monthList li {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Additional Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .sidebar {
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-toggle {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    #monthList li:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    #monthList li.active {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
